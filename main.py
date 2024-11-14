@@ -1,9 +1,14 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = FastAPI()
+class Hello(BaseModel):
+    name: str
 
-@app.get("/hello")
-async def hello():
+app = FastAPI()    
+
+@app.get("/hello/{param}")
+# put body and param inside the parameter in the function
+async def hello(item:Hello, param):
     return {
-        "message": "Hello world"
+        "message": f"Hello {item.name} {param}"
     }
