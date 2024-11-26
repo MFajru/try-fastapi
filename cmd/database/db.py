@@ -9,7 +9,7 @@ db_username = os.getenv("DB_USERNAME")
 db_password = os.getenv("DB_PASSWORD")
 db_host = os.getenv("DB_HOST")
 db_name = os.getenv("DB_NAME")
-postgres_url = f'postgresql://{db_username}:{db_password}@{db_host}/{db_name}'
+postgres_url = f'mysql+pymysql://{db_username}:{db_password}@{db_host}/{db_name}'
 
 engine = create_engine(postgres_url)
 
