@@ -15,4 +15,4 @@ engine = create_engine(postgres_url)
 
 def get_session():
     with Session(engine) as session:
-        yield get_session()
+        yield session
