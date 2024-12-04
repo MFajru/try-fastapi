@@ -13,7 +13,7 @@ db_name = os.getenv("DB_NAME")
 # for mysql
 db_url = f'mysql+pymysql://{db_username}:{db_password}@{db_host}/{db_name}'
 
-engine = create_engine(db_url)
+engine = create_engine(db_url, pool_size=2, max_overflow=5)
 
 def get_session():
     with Session(engine) as session:
