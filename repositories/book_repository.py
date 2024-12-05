@@ -1,4 +1,4 @@
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from models.book import Author, Book
 
@@ -14,3 +14,7 @@ def add_book(book:Book, session: Session) -> Book:
     session.commit()
     session.refresh(book)
     return book
+
+def select_books(session: Session) -> list[Book]:
+    books = session.exec(select(Book)).all()
+    return books
