@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends
-from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session
 
 from cmd.database.db import get_session
 from dto.book_request import BookRequest
-from dto.book_response import BookResponse
+from dto.author_books_response import AuthorBookResponse
 from models.book import Author, Book
 from dto.author_request import AuthorRequest
-from services.book_service import create_author, create_book, read_book
+from services.book_service import create_author, create_book, read_all_author_books, read_book
 
 router = APIRouter()
 
@@ -27,3 +26,22 @@ def post_book(req: BookRequest, session: Session = Depends(get_session)):
 def get_book(session: Session = Depends(get_session)):
     books = read_book(session)
     return books
+
+@router.get("/author-books")
+def get_all_author_books(session: Session = Depends(get_session)):
+    all_author_books = read_all_author_books(session)
+    author_books_responses = []
+    prev_id = 0
+    for author, _ in all_author_books:
+        
+        if author.id == prev_id:
+            continue
+
+        author_books_response = AuthorBookResponse(
+            id=author.id,
+            name=author.name,
+            books=author.books
+        )
+        author_books_responses.append(author_books_response)
+        prev_id = author.id
+    return author_books_responses

@@ -18,3 +18,8 @@ def add_book(book:Book, session: Session) -> Book:
 def select_books(session: Session) -> list[Book]:
     books = session.exec(select(Book)).all()
     return books
+
+def select_all_author_books(session: Session):
+    # author_books = session.exec(select(Author.id ,Author.name, Book.id, Book.title, Book.published_date).join(Book)).all()
+    author_books = session.exec(select(Author, Book).join(Book)).all()
+    return author_books
